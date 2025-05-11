@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import Step1 from "./pages/Step1";
+import { FormData } from "./types/FormData";
 
-function App() {
+const initialFormData: FormData = {
+  name: "",
+  email: "",
+  phone: "",
+  nationality: "",
+  gender: undefined,
+  address: "",
+  dateOfBirth: "",
+
+  idFront: null,
+  idBack: null,
+  additionalDocs: [],
+};
+
+export default function App() {
+  const [step, setStep] = useState(1);
+  const [formData, setFormData] = useState<FormData>(initialFormData);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="form-container">
+      {step === 1 && (
+        <Step1
+          data={formData}
+          setData={setFormData}
+          next={() => setStep(2)}
+          errors={errors}
+          setErrors={setErrors}
+        />
+      )}
     </div>
   );
 }
-
-export default App;
