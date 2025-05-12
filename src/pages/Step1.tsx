@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState }from "react";
 import InputField from "../components/Input";
+import SelectFeild from "../components/Select";
 import { FormData } from "../types/FormData";
 
 type Step1Props = {
@@ -12,6 +13,9 @@ type Step1Props = {
 
 
 const Step1: React.FC<Step1Props> = ({ data, setData, next, errors, setErrors }) => {
+  const [nationalityOptions, setNationalityOptions] = useState<
+  { label: string; value: string }[]
+>([]);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setData(prev => ({ ...prev, [name]: value }));
@@ -19,21 +23,49 @@ const Step1: React.FC<Step1Props> = ({ data, setData, next, errors, setErrors })
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
-    if (!data.name) newErrors.name = "姓名為必填";
-    if (!data.email || !/^\S+@\S+\.\S+$/.test(data.email)) newErrors.email = "請輸入正確的 Email";
-    if (!data.phone || !/^\d{10,15}$/.test(data.phone)) newErrors.phone = "請輸入有效電話";
-    if (!data.nationality) newErrors.nationality = "國籍為必填";
+    if (!data.name) newErrors.name = "Name is requied.";
+    if (!data.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) newErrors.email = "Please enter a valid Email";
+    if (!data.phone || !/^\d{10,15}$/.test(data.phone)) newErrors.phone = "Please enter a valid phone number";
+    if (!data.nationality) newErrors.nationality = "Nationality is required";
+    if (!data.gender) newErrors.gender = "Gender is required";
+    if (!data.address) newErrors.address = "Aaddress is required";
     if (!data.dateOfBirth) {
-      newErrors.dateOfBirth = "出生日期為必填";
+      newErrors.dateOfBirth = "Date of birth is required";
     } else {
       const age = getAge(data.dateOfBirth);
-      if (age < 18 || age > 85) newErrors.dateOfBirth = "年齡需介於 18 至 85 歲";
+      if (age < 18 || age > 85) newErrors.dateOfBirth = "Age must be between 18 and 85";
     }
-
+    
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) next();
   };
 
+
+  const fetchNationalityData = async () => {
+    try {
+      const response = await fetch("https://restcountries.com/v3.1/all");
+      const data = await response.json();
+  
+      const countryNames = data.map((country: any) => country.name.common);
+      const options = countryNames.map((country: string) => ({
+        label: country,
+        value: country
+      }));
+
+      setNationalityOptions(options);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
+  
+  fetchNationalityData();
+
+  const genderOptions = [
+    { label: "Male", value: "Male" },
+    { label: "Female", value: "Female" },
+    { label: "Prefer not to say", value: "Prefer not to say" },
+  ];
   const getAge = (dob: string) => {
     const birth = new Date(dob);
     const today = new Date();
@@ -47,14 +79,15 @@ const Step1: React.FC<Step1Props> = ({ data, setData, next, errors, setErrors })
 
   return (
     <div>
-      <h2>Step 1: 基本資料</h2>
+      <h2>Step 1: Basic Information</h2>
       <div>
         <InputField
-          label="姓名"
+          label="Name"
           name="name"
           value={data.name}
           onChange={handleChange}
           required
+          type="text"
           error={errors.name}
         />
       </div>
@@ -65,49 +98,58 @@ const Step1: React.FC<Step1Props> = ({ data, setData, next, errors, setErrors })
           value={data.email}
           onChange={handleChange}
           required
+          type="text"
           error={errors.email}
         />
       </div>
       <div>
         <InputField
-          label="電話"
+          label="Phone"
           name="phone"
           value={data.phone}
           onChange={handleChange}
           required
+          type="text"
           error={errors.phone}
         />
       </div>
       <div>
-        <label>國籍*</label>
-        <select name="nationality" value={data.nationality} onChange={handleChange}>
-          <option value="">請選擇</option>
-          <option value="Taiwan">台灣</option>
-          <option value="Japan">日本</option>
-          <option value="USA">美國</option>
-          {/* 可自行擴充 */}
-        </select>
-        {errors.nationality && <span>{errors.nationality}</span>}
+        <SelectFeild
+          label="Nationality"
+          options={nationalityOptions}
+          value={data.nationality}
+          onChange={(val) => setData({...data, nationality: val})}
+          required
+          error={errors.nationality}
+        />
       </div>
       <div>
-        <label>性別</label>
-        <select name="gender" value={data.gender} onChange={handleChange}>
-          <option value="">請選擇</option>
-          <option value="Male">男</option>
-          <option value="Female">女</option>
-          <option value="Prefer not to say">不透露</option>
-        </select>
+        <SelectFeild
+          label="Gender"
+          options={genderOptions}
+          value={data.gender || ""}
+          onChange={(val) => setData({...data, gender: val})}
+          required
+          error={errors.gender}
+        />
       </div>
       <div>
-        <label>地址</label>
-        <input name="address" value={data.address} onChange={handleChange} />
+        <InputField
+          label="Address"
+          name="address"
+          value={data.address || ''}
+          onChange={handleChange}
+          required
+          type="text"
+          error={errors.address}
+        />
       </div>
       <div>
-        <label>出生日期*</label>
+        <label>Date of Birth*</label>
         <input type="date" name="dateOfBirth" value={data.dateOfBirth} onChange={handleChange} />
         {errors.dateOfBirth && <span>{errors.dateOfBirth}</span>}
       </div>
-      <button onClick={validate}>下一步</button>
+      <button onClick={validate}>Next</button>
     </div>
   );
 };

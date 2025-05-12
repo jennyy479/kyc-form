@@ -15,7 +15,7 @@ const InputField: React.FC<InputFieldProps> = ({
   onChange,
   required = false,
   error,
-  type = "text",
+  type,
 }) => {
   return (
     <div style={{ marginBottom: "1rem"}}>
