@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import InputField from "../components/Input"
 import SelectFeild from "../components/Select"
 import { FormData } from "../types/FormData"
+import DatePickerField from '../components/DatePicker'
 
 type Step1Props = {
   data: FormData
@@ -37,7 +38,6 @@ const Step1: React.FC<Step1Props> = ({
       newErrors.phone = "Please enter a valid phone number"
     if (!data.nationality) newErrors.nationality = "Nationality is required"
     if (!data.gender) newErrors.gender = "Gender is required"
-    if (!data.address) newErrors.address = "Aaddress is required"
     if (!data.dateOfBirth) {
       newErrors.dateOfBirth = "Date of birth is required"
     } else {
@@ -168,25 +168,20 @@ const Step1: React.FC<Step1Props> = ({
           name='address'
           value={data.address || ""}
           onChange={handleChange}
-          required
           type='text'
           error={errors.address}
         />
       </div>
 
       <div className='form-group'>
-        <label htmlFor='dateOfBirth'>Date of Birth</label>
-        <input
-          id='dateOfBirth'
+        <DatePickerField
+          label="Date of Birth"
           type='date'
           name='dateOfBirth'
-          value={data.dateOfBirth}
+          value={data.dateOfBirth || ""}
           onChange={handleChange}
-          className={errors.dateOfBirth ? "error" : ""}
+          error={errors.dateOfBirth}
         />
-        {errors.dateOfBirth && (
-          <span className='error-message'>{errors.dateOfBirth}</span>
-        )}
       </div>
 
       <div className='form-actions'>
