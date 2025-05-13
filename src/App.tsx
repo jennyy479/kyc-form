@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Step1 from "./pages/Step1";
 import Step2 from "./pages/Step2";
+import Step3 from "./pages/Step3";
 import { FormData } from "./types/FormData";
 
 const initialFormData: FormData = {
@@ -22,6 +23,10 @@ export default function App() {
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  const handlePrev = () => {
+    setStep((prev) => prev - 1);
+  };
+
   return (
     <div className="form-container">
       {step === 1 && (
@@ -38,10 +43,20 @@ export default function App() {
           <Step2
             data={formData}
             setData={setFormData}
-            next={() => setStep(2)}
+            next={() => setStep(3)}
+            prev={handlePrev} 
             errors={errors}
             setErrors={setErrors}
           />
+        )
+      }
+      {
+        step === 3 && (
+          <Step3
+            data={formData}
+            prev={handlePrev}
+          />
+
         )
       }
     </div>

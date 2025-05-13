@@ -35,28 +35,69 @@ const SelectFeild: React.FC<SelectProps> = ({ label, options, value, onChange, p
   }, []);
 
   return (
-    <div ref={containerRef} style={{ marginBottom: "1rem" }}>
-      {label && <label>{label}{required && " *"}</label>}
+    <div ref={containerRef} style={{ marginBottom: "1rem", position: "relative" }}>
+      {label && <label>{label}{required && 
+          <span 
+            style={{
+            color: "var(--danger)"  }}> * </span>}</label>}
       <div
-        onClick={() => setOpen(!open)}
         style={{
-          border: "1px solid #ccc",
-          padding: "8px",
+          width: "100%",
+          padding: "0.75rem 1rem",
+          border: "1px solid var(--gray-300)",  
+          borderRadius: open ? 
+            "var(--border-radius) var(--border-radius) 0 0" : 
+            "var(--border-radius)", 
+          fontSize: "0.95rem",               
+          color: "var(--primary)",
+          transition: "var(--transition)",
+          backgroundColor: "var(--white)",
           cursor: "pointer",
-          position: "relative"
+          position: "relative",
+          boxSizing: "border-box"
         }}
       >
-        {value ? options.find((opt) => opt.value === value)?.label : placeholder || "Please select"}
-      </div>
-      {open && (
-        <div style={{ border: "1px solid #ccc", maxHeight: "200px", overflowY: "auto", position: "absolute", backgroundColor: "#fff", width: "100%", zIndex: 999 }}>
+        {!open ? (
+          <div onClick={() => setOpen(true)}>
+            {value ? options.find((opt) => opt.value === value)?.label : placeholder || "Please select"}
+          </div>
+        ) : (
           <input
             type="text"
             placeholder="Searching..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            style={{ width: "100%", padding: "8px", boxSizing: "border-box" }}
+            onClick={(e) => e.stopPropagation()}
+            autoFocus
+            style={{ 
+              width: "100%",
+              border: "none",
+              outline: "none",
+              padding: "0",
+              background: "transparent",
+              fontSize: "0.95rem",
+              color: "var(--primary)",
+              boxSizing: "border-box"
+            }}
           />
+        )}
+      </div>
+      {open && (
+        <div style={{ 
+          border: "1px solid var(--gray-300)", 
+          borderTop: "none", 
+          maxHeight: "200px", 
+          overflowY: "auto", 
+          position: "absolute",
+          left: "0",
+          right: "0", 
+          backgroundColor: "#fff", 
+          zIndex: 999,
+          borderBottomLeftRadius: "var(--border-radius)",
+          borderBottomRightRadius: "var(--border-radius)",
+          boxSizing: "border-box",
+          boxShadow: "0 4px 6px rgba(0,0,0,0.1)"
+        }}>
           {filteredOptions.map((option) => (
             <div
               key={option.value}
@@ -65,15 +106,28 @@ const SelectFeild: React.FC<SelectProps> = ({ label, options, value, onChange, p
                 setOpen(false);
                 setSearch("");
               }}
-              style={{ padding: "8px", cursor: "pointer", borderBottom: "1px solid #eee" }}
+              style={{ 
+                padding: "0.75rem 1rem", 
+                cursor: "pointer", 
+                borderBottom: "1px solid #eee",
+                backgroundColor: value === option.value ? "var(--gray-100)" : "transparent",
+                transition: "background-color 0.2s ease",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis"
+              }}
             >
               {option.label}
             </div>
           ))}
-          {filteredOptions.length === 0 && <div style={{ padding: "8px", color: "#999" }}>No results found</div>}
+          {filteredOptions.length === 0 && (
+            <div style={{ padding: "0.75rem 1rem", color: "var(--gray-500)" }}>
+              No results found
+            </div>
+          )}
         </div>
       )}
-      {error && <div style={{ color: "red" }}>{error}</div>}
+      {error && <div style={{ color: "red", marginTop: "0.5rem", fontSize: "0.85rem" }}>{error}</div>}
     </div>
   );
 };
