@@ -29,7 +29,7 @@ const InputField: React.FC<InputFieldProps> = ({
         name={name}
         value={value}
         onChange={onChange}
-        style={{ borderColor: error ? "red" : "#ccc"}}
+        style={{ borderColor: error ? "var(--danger)" : "#ccc"}}
       />
       {error && <span className="error-message">{ error }</span>}
     </div>

@@ -19,7 +19,7 @@ const initialFormData: FormData = {
 };
 
 export default function App() {
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(1);
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [errors, setErrors] = useState<Record<string, string>>({});
 

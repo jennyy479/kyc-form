@@ -20,7 +20,7 @@ const Step3: React.FC<Step3Props> = ({ data, prev }) => {
         {file.name} - {(file.size / 1024).toFixed(2)} KB
       </li>
     ) : (
-      <li style={{ color: "red" }}>No file uploaded</li>
+      <li style={{ color: "var(--danger)" }}>No file uploaded</li>
     )
 
   const renderFileList = (fileList: File[]) =>
@@ -31,7 +31,7 @@ const Step3: React.FC<Step3Props> = ({ data, prev }) => {
         </li>
       ))
     ) : (
-      <li style={{ color: "red" }}>No additional documents uploaded</li>
+      <span className="error-message">No additional documents uploaded</span>
     )
 
   return (
@@ -78,16 +78,15 @@ const Step3: React.FC<Step3Props> = ({ data, prev }) => {
           <div className='step-title'>Confirmation Page</div>
         </div>
       </div>
-      <div className='step3-container'>
         <h2>Step 3: Confirmation Page</h2>
 
         <h3>Personal Information</h3>
         <ul>
-          <li>Name: {data.name}</li>
-          <li>Email: {data.email}</li>
-          <li>Phone: {data.phone}</li>
-          <li>Nationality: {data.nationality}</li>
-          <li>Date of Birth: {data.dateOfBirth}</li>
+          <li><strong>Name: </strong> {data.name}</li>
+          <li><strong>Email: </strong>{data.email}</li>
+          <li><strong>Phone: </strong>{data.phone}</li>
+          <li><strong>Nationality: </strong>{data.nationality}</li>
+          <li><strong>Date of Birth: </strong> {data.dateOfBirth}</li>
         </ul>
 
         <h3>Uploaded Documents</h3>
@@ -111,7 +110,6 @@ const Step3: React.FC<Step3Props> = ({ data, prev }) => {
           </div>
         )}
       </div>
-    </div>
   )
 }
 

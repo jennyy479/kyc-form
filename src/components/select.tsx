@@ -44,7 +44,8 @@ const SelectFeild: React.FC<SelectProps> = ({ label, options, value, onChange, p
         style={{
           width: "100%",
           padding: "0.75rem 1rem",
-          border: "1px solid var(--gray-300)",  
+          border: "1px solid var(--gray-300)",
+          borderColor: error ? "var(--danger)" : "#ccc",
           borderRadius: open ? 
             "var(--border-radius) var(--border-radius) 0 0" : 
             "var(--border-radius)", 
@@ -69,16 +70,7 @@ const SelectFeild: React.FC<SelectProps> = ({ label, options, value, onChange, p
             onChange={(e) => setSearch(e.target.value)}
             onClick={(e) => e.stopPropagation()}
             autoFocus
-            style={{ 
-              width: "100%",
-              border: "none",
-              outline: "none",
-              padding: "0",
-              background: "transparent",
-              fontSize: "0.95rem",
-              color: "var(--primary)",
-              boxSizing: "border-box"
-            }}
+            
           />
         )}
       </div>
@@ -127,7 +119,7 @@ const SelectFeild: React.FC<SelectProps> = ({ label, options, value, onChange, p
           )}
         </div>
       )}
-      {error && <div style={{ color: "red", marginTop: "0.5rem", fontSize: "0.85rem" }}>{error}</div>}
+      {error && <div style={{ color: "var(--danger)", marginTop: "0.5rem", fontSize: "0.85rem" }}>{error}</div>}
     </div>
   );
 };

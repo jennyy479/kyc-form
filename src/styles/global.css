@@ -44,6 +44,13 @@ h2 {
   border-bottom: 1px solid var(--gray-200);
 }
 
+h3 {
+  color: #555;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
 .form-container > div {
   margin-bottom: 1.25rem;
 }
@@ -108,29 +115,6 @@ span.error-message {
   color: var(--danger);
   font-size: 0.8rem;
   margin-top: 0.5rem;
-}
-
-.select-container {
-  position: relative;
-}
-
-.select-container select {
-  appearance: none;
-  padding-right: 2.5rem;
-}
-
-.select-container::after {
-  content: "";
-  position: absolute;
-  right: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 0;
-  height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 5px solid var(--gray-500);
-  pointer-events: none;
 }
 
 button {
@@ -249,59 +233,6 @@ button.secondary:hover {
   color: var(--secondary);
   text-decoration: underline;
   cursor: pointer;
-}
-
-.helper-text {
-  font-size: 0.8rem;
-  color: var(--gray-500);
-  margin-top: 0.5rem;
-  font-style: italic;
-}
-
-.file-list {
-  margin-top: 1rem;
-  width: 100%;
-}
-
-.file-item {
-  display: flex;
-  align-items: center;
-  padding: 0.75rem;
-  background-color: var(--gray-100);
-  border-radius: var(--border-radius);
-  margin-bottom: 0.5rem;
-  border: 1px solid var(--gray-200);
-}
-
-.file-item svg {
-  color: var(--primary);
-  margin-right: 0.5rem;
-}
-
-.file-item-name {
-  flex-grow: 1;
-  font-size: 0.875rem;
-  color: var(--primary);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.file-item-remove {
-  color: var(--danger);
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: var(--transition);
-}
-
-.file-item-remove:hover {
-  background-color: rgba(242, 78, 78, 0.1);
-  border-radius: 50%;
 }
 
 @media (max-width: 768px) {  
@@ -430,20 +361,6 @@ button.secondary:hover {
   background-position: center;
   background-repeat: no-repeat;
   background-size: 12px;
-}
-
-h2 {
-  color: #333;
-  border-bottom: 2px solid #eee;
-  padding-bottom: 10px;
-  margin-bottom: 20px;
-}
-
-h3 {
-  color: #555;
-  margin-top: 20px;
-  margin-bottom: 10px;
-  font-size: 18px;
 }
 
 ul {
