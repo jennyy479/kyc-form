@@ -8,6 +8,7 @@ export const validateForm = (data: FormData, step?: number) => {
     if (!data.email || !/^\S+@\S+\.\S+$/.test(data.email)) newErrors.email = "Please enter a valid email";
     if (!data.phone || !/^\d{10,15}$/.test(data.phone)) newErrors.phone = "Please enter a valid phone number";
     if (!data.nationality) newErrors.nationality = "Nationality is required";
+    if(!data.gender) newErrors.gender = "Gender is required";
     if (!data.dateOfBirth) {
       newErrors.dateOfBirth = "Date of birth is required";
     } else {

@@ -12,7 +12,7 @@ const Step3: React.FC<Step3Props> = ({ data, prev }) => {
   const [currentStep, setCurrentStep] = useState(3)
 
   const handleSubmit = () => {
-    console.log("Form submitted!", { data })
+
     setSubmitted(true)
     setCurrentStep(currentStep + 1)
   }
@@ -34,7 +34,7 @@ const Step3: React.FC<Step3Props> = ({ data, prev }) => {
         </li>
       ))
     ) : (
-      <span className="error-message">No additional documents uploaded</span>
+      <span className="help-message">No additional documents uploaded</span>
     )
 
     const steps = [

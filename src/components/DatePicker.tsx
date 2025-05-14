@@ -26,10 +26,7 @@ const DatePickerField: React.FC<DatePickerFieldProps> = ({
             style={{
               color: "var(--danger)",
             }}
-          >
-            {" "}
-            *{" "}
-          </span>
+          >*</span>
         )}
       </label>
       <input

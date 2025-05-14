@@ -11,8 +11,9 @@ type FileUploadProps = {
   type?: string;
   accept?: string;
   multiple?: boolean;
+  limit_file_size?: number;
 };
-const MAX_FILE_SIZE = 5 * 1024 * 1024; 
+
 const FileUpload: React.FC<FileUploadProps> = ({
   label,
   name,
@@ -22,17 +23,20 @@ const FileUpload: React.FC<FileUploadProps> = ({
   onChange,
   type = "file",
   accept,
-  multiple = false
+  multiple = false,
+  limit_file_size,
 }) => {
+  const MAX_FILE_SIZE＿KB = (limit_file_size ?? 0) * 1024 * 1024;
   const [inputId] = useState(() => uuidv4());
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
     const selectedFiles = Array.from(files);
 
-    const oversized = selectedFiles.find(file => file.size > MAX_FILE_SIZE);
-    if (oversized) {
+    const oversized = selectedFiles.find((file) => file.size > MAX_FILE_SIZE＿KB)
+    if (oversized &&  MAX_FILE_SIZE＿KB !== 0) {
       const sizeMB = (oversized.size / 1024 / 1024).toFixed(2);
+      
       alert(`檔案大小為 ${sizeMB} MB，超過 5MB 限制`);
       e.target.value = '';
       return;
@@ -71,48 +75,66 @@ const FileUpload: React.FC<FileUploadProps> = ({
     input?.click();
   };
 
+  const formatFileSize = (bytes: number) => {
+    if (bytes < 1024) return bytes + ' B';
+    else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+    else return (bytes / 1048576).toFixed(1) + ' MB';
+  };
+
   return (
     <div style={{ marginBottom: "1rem"}}>
-      <label>
-        {label} 
-        {required && 
-          <span 
-            style={{
-            color: "var(--danger)"  }}> * </span>}
-      </label>
-      <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-        <button
-          type="button"
-          className={"w-100"}
-          onClick={handleButtonClick} 
-          >
-          新增附件
-        <input
-          id={inputId}
-          style={{ display: "none" }}
-          type={type}
-          name={name}
-          onChange={handleFileChange}
-          accept={accept}
-          multiple={multiple}   
-        />
-        </button>
-        { Array.isArray(value) ? (
-          value.map((file, idx) => (
-            <div style={{display: "flex"}} key={idx}>
-              <span>{file.name}</span>
-              <button className="small-button" type="button" onClick={() => handleRemove(idx)}>x</button>
+    <label>
+      {label} 
+      {required && <span style={{ color: "var(--danger)" }}>*</span>}
+    </label>
+    <div style={{ display: "flex", gap: "1rem", alignItems: "center", flexWrap: "wrap" }}>
+      <button
+        type="button"
+        className="w-100"
+        onClick={handleButtonClick} 
+      >
+        新增附件
+      </button>
+      <input
+        id={inputId}
+        style={{ display: "none" }}
+        type={type}
+        name={name}
+        onChange={handleFileChange}
+        accept={accept}
+        multiple={multiple}   
+      />
+      
+      {Array.isArray(value) && value.length > 0 && (
+        <div style={{ width: "100%", marginTop: "0.5rem" }}>
+          {value.map((file, idx) => (
+            <div style={{ display: "flex", marginBottom: "0.5rem" }} key={idx}>
+              <div className="file-upload">
+                <span>{file.name}</span>
+                <button className="small-button" type="button" onClick={() => handleRemove(idx)}>×</button>
+              </div>
+              <div style={{ marginLeft: "0.5rem", color: "var(--gray-500)", fontSize: "0.875rem" }}>
+                {formatFileSize(file.size)}
+              </div>
             </div>
-          ))
-        ) : value ? (
-          <div style={{display: "flex"}}>
+          ))}
+        </div>
+      )}
+      
+      {!Array.isArray(value) && value && (
+        <div style={{ display: "flex", alignItems: "center", width: "100%" }}>
+          <div className="file-upload">
             <span>{value.name}</span>
-            <button className="small-button" type="button" onClick={() => handleRemove()}>x</button>
+            <button className="small-button" type="button" onClick={() => handleRemove()}>×</button>
           </div>
-        ) : null}
-      </div>
-      {error && <span className='error-message'>{ error }</span>}
+          <div style={{ marginLeft: "0.5rem", color: "var(--gray-500)", fontSize: "0.875rem" }}>
+            {formatFileSize(value.size)} ({value.type})
+          </div>
+        </div>
+      )}
     </div>
+    {error && <span className="error-message">{error}</span>}
+  </div>
   )
 };
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { FormData } from "../types/FormData"
 import { validateForm } from "../utils/validateForm"
 import InputField from "../components/Input"
@@ -21,21 +21,16 @@ const Step1: React.FC<Step1Props> = ({
   errors,
   setErrors,
 }) => {
+  const currentStep = 1;
   const [nationalityOptions, setNationalityOptions] = useState<
     { label: string; value: string }[]
   >([])
+  const [shouldValidate, setShouldValidate] = useState(false)
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target
     setData((prev) => ({ ...prev, [name]: value }))
-  }
-
-  const validate = () => {
-    const newErrors = validateForm(data, currentStep);
-    console.log('newErrors', newErrors)
-    setErrors(newErrors)
-    if (Object.keys(newErrors).length === 0) next()
   }
 
   const fetchNationalityData = async () => {
@@ -69,7 +64,21 @@ const Step1: React.FC<Step1Props> = ({
     { title: "Confirmation Page" },
   ];
 
-  const currentStep = 1;
+  const runValidation = () => {
+    const newErrors = validateForm(data, currentStep)
+    setErrors(newErrors)
+    return newErrors
+  }
+  
+  const validate = () => {
+    setShouldValidate(true)
+    const newErrors = runValidation()
+    if (Object.keys(newErrors).length === 0) next()
+  }
+  
+  useEffect(() => {
+    if(shouldValidate) runValidation()
+  })
 
   return (
     <div>
@@ -152,6 +161,7 @@ const Step1: React.FC<Step1Props> = ({
           name='dateOfBirth'
           value={data.dateOfBirth || ""}
           onChange={handleChange}
+          required
           error={errors.dateOfBirth}
         />
       </div>

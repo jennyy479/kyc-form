@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState, useEffect }  from "react"
 import { FormData } from "../types/FormData"
 import { validateForm } from "../utils/validateForm"
 import FileUpload from "../components/FileUpload"
@@ -21,11 +21,24 @@ const Step2: React.FC<Step2Props> = ({
   errors,
   setErrors,
 }) => {
-  const validate = () => {
+  const [shouldValidate, setShouldValidate] = useState(false)
+  const currentStep = 2
+
+  const runValidation = () => {
     const newErrors = validateForm(data, currentStep)
     setErrors(newErrors)
+    return newErrors
+  }
+  
+  const validate = () => {
+    setShouldValidate(true)
+    const newErrors = runValidation()
     if (Object.keys(newErrors).length === 0) next()
   }
+  
+  useEffect(() => {
+    if(shouldValidate) runValidation()
+  })
 
   const steps = [
     { title: "Basic Information" },
@@ -33,7 +46,7 @@ const Step2: React.FC<Step2Props> = ({
     { title: "Confirmation Page" },
   ];
 
-  const currentStep = 2
+
 
   return (
     <div>
@@ -49,6 +62,7 @@ const Step2: React.FC<Step2Props> = ({
           onChange={(f) => setData((prev) => ({ ...prev, idFront: f as File }))}
           required
           type='file'
+          limit_file_size={5}
           error={errors.idFront}
         />
       </div>
@@ -62,6 +76,7 @@ const Step2: React.FC<Step2Props> = ({
           onChange={(f) => setData((prev) => ({ ...prev, idBack: f as File }))}
           required
           type='file'
+          limit_file_size={5}
           error={errors.idBack}
         />
       </div>
@@ -76,6 +91,7 @@ const Step2: React.FC<Step2Props> = ({
             setData((prev) => ({ ...prev, additionalDocs: f as File[] }))
           }
           type='file'
+          limit_file_size={10}
           error={errors.additionalDocs}
           multiple
         />
