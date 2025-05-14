@@ -22,7 +22,7 @@ const Step2: React.FC<Step2Props> = ({
   setErrors,
 }) => {
   const validate = () => {
-    const newErrors = validateForm(data)
+    const newErrors = validateForm(data, currentStep)
     setErrors(newErrors)
     if (Object.keys(newErrors).length === 0) next()
   }
