@@ -1,7 +1,8 @@
 import React from "react"
-import FileUpload from "../components/FileUpload"
 import { FormData } from "../types/FormData"
 import { validateForm } from "../utils/validateForm"
+import FileUpload from "../components/FileUpload"
+import StepIndicator from "../components/StepIndicator"
 
 type Step2Props = {
   data: FormData
@@ -22,43 +23,21 @@ const Step2: React.FC<Step2Props> = ({
 }) => {
   const validate = () => {
     const newErrors = validateForm(data)
-    console.log("Errors:", newErrors)
     setErrors(newErrors)
     if (Object.keys(newErrors).length === 0) next()
   }
 
-  return (
-    <div className='form-step'>
-      {}
-      <div className='steps-indicator'>
-        <div className='step-item completed'>
-          <div className='step-circle'>
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              width='12'
-              height='12'
-              viewBox='0 0 24 24'
-              fill='none'
-              stroke='currentColor'
-              strokeWidth='3'
-              strokeLinecap='round'
-              strokeLinejoin='round'
-            >
-              <polyline points='20 6 9 17 4 12'></polyline>
-            </svg>
-          </div>
-          <div className='step-title'>Basic Information</div>
-        </div>
-        <div className='step-item active'>
-          <div className='step-circle'>2</div>
-          <div className='step-title'>Document Upload</div>
-        </div>
-        <div className='step-item'>
-          <div className='step-circle'>3</div>
-          <div className='step-title'>Confirmation Page</div>
-        </div>
-      </div>
+  const steps = [
+    { title: "Basic Information" },
+    { title: "Document Upload" },
+    { title: "Confirmation Page" },
+  ];
 
+  const currentStep = 2
+
+  return (
+    <div>
+      <StepIndicator steps={steps} currentStep={currentStep} />
       <h2>Step 2: Document Upload</h2>
 
       <div className='form-group'>

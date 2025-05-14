@@ -1,7 +1,9 @@
 import React, { useState } from "react"
+import { FormData } from "../types/FormData"
+import { validateForm } from "../utils/validateForm"
 import InputField from "../components/Input"
 import SelectFeild from "../components/Select"
-import { FormData } from "../types/FormData"
+import StepIndicator from "../components/StepIndicator"
 import DatePickerField from '../components/DatePicker'
 
 type Step1Props = {
@@ -30,22 +32,8 @@ const Step1: React.FC<Step1Props> = ({
   }
 
   const validate = () => {
-    const newErrors: Record<string, string> = {}
-    if (!data.name) newErrors.name = "Name is requied."
-    if (!data.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email))
-      newErrors.email = "Please enter a valid Email"
-    if (!data.phone || !/^\d{10,15}$/.test(data.phone))
-      newErrors.phone = "Please enter a valid phone number"
-    if (!data.nationality) newErrors.nationality = "Nationality is required"
-    if (!data.gender) newErrors.gender = "Gender is required"
-    if (!data.dateOfBirth) {
-      newErrors.dateOfBirth = "Date of birth is required"
-    } else {
-      const age = getAge(data.dateOfBirth)
-      if (age < 18 || age > 85)
-        newErrors.dateOfBirth = "Age must be between 18 and 85"
-    }
-
+    const newErrors = validateForm(data, currentStep);
+    console.log('newErrors', newErrors)
     setErrors(newErrors)
     if (Object.keys(newErrors).length === 0) next()
   }
@@ -74,34 +62,18 @@ const Step1: React.FC<Step1Props> = ({
     { label: "Female", value: "Female" },
     { label: "Prefer not to say", value: "Prefer not to say" },
   ]
-  const getAge = (dob: string) => {
-    const birth = new Date(dob)
-    const today = new Date()
-    let age = today.getFullYear() - birth.getFullYear()
-    const m = today.getMonth() - birth.getMonth()
-    if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
-      age--
-    }
-    return age
-  }
+
+  const steps = [
+    { title: "Basic Information" },
+    { title: "Document Upload" },
+    { title: "Confirmation Page" },
+  ];
+
+  const currentStep = 1;
 
   return (
-    <div className='form-step'>
-      <div className='steps-indicator'>
-        <div className='step-item active'>
-          <div className='step-circle'>1</div>
-          <div className='step-title'>Basic Information</div>
-        </div>
-        <div className='step-item'>
-          <div className='step-circle'>2</div>
-          <div className='step-title'>Document Upload</div>
-        </div>
-        <div className='step-item'>
-          <div className='step-circle'>3</div>
-          <div className='step-title'>Confirmation Page</div>
-        </div>
-      </div>
-
+    <div>
+      <StepIndicator steps={steps} currentStep={currentStep} />
       <h2>Step 1: Basic Information</h2>
 
       <div className='form-group'>

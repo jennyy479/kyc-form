@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { FormData } from "../types/FormData"
+import StepIndicator from "../components/StepIndicator"
 
 type Step3Props = {
   data: FormData
@@ -8,10 +9,12 @@ type Step3Props = {
 
 const Step3: React.FC<Step3Props> = ({ data, prev }) => {
   const [submitted, setSubmitted] = useState(false)
+  const [currentStep, setCurrentStep] = useState(3)
 
   const handleSubmit = () => {
     console.log("Form submitted!", { data })
     setSubmitted(true)
+    setCurrentStep(currentStep + 1)
   }
 
   const renderFileInfo = (file: File | null) =>
@@ -34,50 +37,16 @@ const Step3: React.FC<Step3Props> = ({ data, prev }) => {
       <span className="error-message">No additional documents uploaded</span>
     )
 
+    const steps = [
+      { title: "Basic Information" },
+      { title: "Document Upload" },
+      { title: "Confirmation Page" },
+    ];
+
+
   return (
-    <div className='form-step'>
-      <div className='steps-indicator'>
-        <div className='step-item completed'>
-          <div className='step-circle'>
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              width='12'
-              height='12'
-              viewBox='0 0 24 24'
-              fill='none'
-              stroke='currentColor'
-              strokeWidth='3'
-              strokeLinecap='round'
-              strokeLinejoin='round'
-            >
-              <polyline points='20 6 9 17 4 12'></polyline>
-            </svg>
-          </div>
-          <div className='step-title'>Basic Information</div>
-        </div>
-        <div className='step-item completed'>
-          <div className='step-circle'>
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              width='12'
-              height='12'
-              viewBox='0 0 24 24'
-              fill='none'
-              stroke='currentColor'
-              strokeWidth='3'
-              strokeLinecap='round'
-              strokeLinejoin='round'
-            >
-              <polyline points='20 6 9 17 4 12'></polyline>
-            </svg>
-          </div>
-          <div className='step-title'>Document Upload</div>
-        </div>
-        <div className='step-item'>
-          <div className='step-circle'>3</div>
-          <div className='step-title'>Confirmation Page</div>
-        </div>
-      </div>
+    <div>
+        <StepIndicator steps={steps} currentStep={currentStep} />
         <h2>Step 3: Confirmation Page</h2>
 
         <h3>Personal Information</h3>

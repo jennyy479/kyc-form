@@ -71,7 +71,6 @@ const FileUpload: React.FC<FileUploadProps> = ({
     input?.click();
   };
 
-
   return (
     <div style={{ marginBottom: "1rem"}}>
       <label>
@@ -116,6 +115,5 @@ const FileUpload: React.FC<FileUploadProps> = ({
     </div>
   )
 };
-
 
 export default FileUpload;

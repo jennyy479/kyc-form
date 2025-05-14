@@ -1,12 +1,12 @@
 type DatePickerFieldProps = {
-  label: string;
-  name: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  required?: boolean;
-  error?: string;
-  type?: string;
-};
+  label: string
+  name: string
+  value: string
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  required?: boolean
+  error?: string
+  type?: string
+}
 
 const DatePickerField: React.FC<DatePickerFieldProps> = ({
   label,
@@ -15,25 +15,33 @@ const DatePickerField: React.FC<DatePickerFieldProps> = ({
   onChange,
   required = false,
   error,
-  type="date",
+  type = "date",
 }) => {
   return (
-    <div style={{ marginBottom: "1rem"}}>
+    <div style={{ marginBottom: "1rem" }}>
       <label>
-        {label}{required && <span 
+        {label}
+        {required && (
+          <span
             style={{
-            color: "var(--danger)"  }}> * </span>}
+              color: "var(--danger)",
+            }}
+          >
+            {" "}
+            *{" "}
+          </span>
+        )}
       </label>
-        <input
-          type={type}
-          name={name}
-          value={value}
-          onChange={onChange}
-          style={{ borderColor: error ? "var(--danger)" : "#ccc"}}
-        />
-        {error && <span className="error-message">{ error }</span>}
+      <input
+        type={type}
+        name={name}
+        value={value}
+        onChange={onChange}
+        style={{ borderColor: error ? "var(--danger)" : "#ccc" }}
+      />
+      {error && <span className='error-message'>{error}</span>}
     </div>
   )
-};
+}
 
-export default DatePickerField;
+export default DatePickerField
