@@ -1,46 +1,68 @@
-# Getting Started with Create React App
+# KYC 三步驟表單系統
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+本專案是一個基於 **React 18+** 與 **TypeScript** 的 KYC（Know Your Customer）三步驟表單應用程式，提供使用者輸入基本資訊、上傳身份文件、預覽並確認提交資料的完整流程。
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 📋 功能簡介
 
-### `npm start`
+### 步驟一：基本資訊輸入
+- **欄位**：
+  - 姓名（必填）
+  - 電子郵件（必填，格式驗證）
+  - 電話號碼（必填，格式驗證）
+  - 國籍（必填，提供常見國家選項）
+  - 性別（選填：男、女、不願透露）
+  - 地址（選填）
+  - 出生日期（必填，年齡需介於 18 至 85 歲之間）
+- **功能**：
+  - 欄位驗證
+  - 點擊「下一步」需通過表單驗證
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### 步驟二：文件上傳
+- **上傳項目**：
+  - 身份證正面（必填，支援 jpg/png/pdf，最大 5MB）
+  - 身份證反面（必填，支援 jpg/png/pdf，最大 5MB）
+  - 其他附加文件（選填，可多檔上傳，支援 jpg/png/pdf，總大小限 10MB）
+- **功能**：
+  - 顯示檔案名稱與大小
+  - 提供刪除已上傳檔案的按鈕
+  - 「上一步」與「下一步」按鈕切換流程
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### 步驟三：資料確認
+- **內容**：
+  - 顯示第一步輸入的所有資訊
+  - 顯示第二步上傳檔案的名稱與大小
+- **功能**：
+  - 點擊「提交」顯示成功訊息
+  - 「上一步」返回編輯
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🛠️ 技術規格
 
-### `npm run build`
+### 技術架構
+- React 18+（採用 Functional Components）
+- TypeScript（強型別支援）
+- 自訂 UI 元件（不使用任何 UI 框架）
+- 支援狀態管理與表單驗證套件
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 自訂元件
+| 元件名稱 | 功能 |
+|----------|------|
+| `Input` | 支援不同類型輸入與錯誤訊息 |
+| `Select` | 下拉選單，含搜尋功能 |
+| `DatePicker` | 支援年月日選取與年齡驗證 |
+| `FileUpload` | 上傳與刪除檔案，顯示大小與格式 |
+| `StepIndicator` | 顯示步驟狀態（完成、進行中、未開始） |
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 📦 安裝與啟動
 
-### `npm run eject`
+```bash
+# 安裝專案依賴
+npm install
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+# 啟動開發伺服器
+npm run dev
